@@ -67,19 +67,20 @@ const App = () => {
     }
   }
 
-  const addBlog = async (blogObj) => {
+  const createBlog = async (blogObj) => {
 
     blogFormRef.current.toggleVisibility()
-    const addedBlog = await blogService.create(blogObj)
+    await blogService.create(blogObj)
+    const newBlogs = await blogService.getAll()
 
-    setBlogs(blogs.concat(addedBlog))
+    setBlogs(newBlogs)
     setMessage('New blog added!')
     setTimeout(() => {
       setMessage(null)
     }, 5000)
   }
 
-  const addLike = async (blogObj, id) => {
+  const updateBlog = async (blogObj, id) => {
 
     const updatedBlog = await blogService.update(blogObj, id)
     let copy = [...blogs]
@@ -107,8 +108,9 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+        {console.log(user)}
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={addLike} user={user} removeBlog={deleteBlog}/>
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} user={user} deleteBlog={deleteBlog}/>
         )}
       </div>
     )
@@ -148,7 +150,7 @@ const App = () => {
           </p>
 
           <Togglable buttonLabel="Create blog" ref={blogFormRef}>
-            <BlogForm createBlog={addBlog}/>
+            <BlogForm createBlog={createBlog}/>
           </Togglable>
 
           {displayBlogs()}

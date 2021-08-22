@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 
-const Blog = ({ blog, user, updateBlog, removeBlog }) => {
+const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,31 +20,24 @@ const Blog = ({ blog, user, updateBlog, removeBlog }) => {
     setVisible(!visible)
   }
 
-  const addLiketoBlog = (event) => {
+  const addLike = (event) => {
     event.preventDefault()
     updateBlog(
       {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
         likes: blog.likes + 1
       } , blog.id
     )
   }
 
-  const deleteBlog = (event) => {
-    event.preventDefault()
-    removeBlog(blog.id)
-  }
-
   const deleteButton = () => {
-
-    if((blog.user !== null) && (blog.user.username = user.username)){
+    console.log(blog.user.username)
+    console.log(blog)
+    console.log(user.username)
+    if((blog.user !== null) && (blog.user.username === user.username)){
       return (
-        <button onClick={deleteBlog}>Delete</button>
+        <button onClick={() => {deleteBlog(blog.id)}}>Delete</button>
       )
     }
-
   }
 
 
@@ -62,7 +55,7 @@ const Blog = ({ blog, user, updateBlog, removeBlog }) => {
           {blog.author} <br/>
           {blog.url} <br/>
           Likes{' '}{blog.likes}
-          <button onClick={addLiketoBlog}>Like</button>
+          <button onClick={addLike}>Like</button>
         </p>
 
         {deleteButton()}
